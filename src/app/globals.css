@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+/* Custom Swiper Controls with Tailwind color matches */
+.custom-banner-swiper .swiper-button-next,
+.custom-banner-swiper .swiper-button-prev {
+  color: #ffffff !important;
+  background-color: rgba(15, 23, 42, 0.4) !important; /* slate-900/40 */
+  backdrop-filter: blur(8px);
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.custom-banner-swiper .swiper-button-next:after,
+.custom-banner-swiper .swiper-button-prev:after {
+  font-size: 16px !important;
+  font-weight: 800;
+}
+
+.custom-banner-swiper .swiper-button-next:hover,
+.custom-banner-swiper .swiper-button-prev:hover {
+  background-color: #2563eb !important; /* blue-600 */
+  border-color: #2563eb;
+}
+
+/* Pagination Dots Customization */
+.custom-banner-swiper .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.4) !important;
+  opacity: 1 !important;
+  width: 8px;
+  height: 8px;
+  transition: all 0.3s ease;
+}
+
+.custom-banner-swiper .swiper-pagination-bullet-active {
+  background: #2563eb !important; /* blue-600 */
+  width: 28px !important;
+  border-radius: 4px !important;
+}
+
+/* Hide navigation controls on small touch interfaces */
+@media (max-width: 640px) {
+  .custom-banner-swiper .swiper-button-next,
+  .custom-banner-swiper .swiper-button-prev {
+    display: none !important;
+  }
+}
