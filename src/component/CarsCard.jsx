@@ -1,50 +1,52 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const CarsCard = ({ car }) => {
-    // ড্যাটা ডি-স্ট্রাকচারিং (ডাটাবেজের ফিল্ডের সাথে মিলিয়ে নিবেন)
-    const { 
+
+    const {
         _id,
-        carName, 
-        dailyRentPrice, 
-        carType, 
-        imageUrl, 
-        seatCapacity, 
-        pickupLocation, 
-        availabilityStatus 
+        carName,
+        dailyRentPrice,
+        carType,
+        imageUrl,
+        seatCapacity,
+        pickupLocation,
+        availabilityStatus
     } = car || {};
 
     return (
+
+
         <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-          
+
             <div className="relative h-48 w-full bg-gray-100">
                 <Image
-                    src={imageUrl || "https://images.unsplash.com/photo-1503376780353-7e6692767b70"} 
-                    alt={carName} 
+                    src={imageUrl || "https://images.unsplash.com/photo-1503376780353-7e6692767b70"}
+                    alt={carName}
                     className="w-full h-full object-cover"
                     width={300}
                     height={400}
                 />
-                <span className={`absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm ${
-                    availabilityStatus === 'Available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                }`}>
+                <span className={`absolute top-3 right-3 text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm ${availabilityStatus === 'Available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
                     {availabilityStatus || 'Available'}
                 </span>
             </div>
 
-          
+
             <div className="p-5 flex flex-col flex-grow">
-                
+
                 <span className="text-xs font-medium text-blue-600 uppercase tracking-wider mb-1">
                     {carType || 'Sedan'}
                 </span>
 
-                
+
                 <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
                     {carName || 'Premium Car Model'}
                 </h3>
 
-                
+
                 <div className="flex items-center text-sm text-gray-500 mb-4">
                     <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -67,11 +69,12 @@ const CarsCard = ({ car }) => {
                         </p>
                     </div>
                 </div>
+                <Link href={`/explore-cars/${car?._id}`} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-center mt-auto text-sm">
 
-               
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-center mt-auto text-sm">
-                    View Details
-                </button>
+                    
+                        View Details
+                    
+                </Link>
             </div>
         </div>
     );
