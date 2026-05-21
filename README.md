@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚗 DriveFleet - Full-Stack Car Rental Platform
 
-## Getting Started
+DriveFleet holo akta modern, full-stack car rental application jekhane user-ra khub shojei gari browse korte, rent korte abong nijeder booking manage korte parben. Ete responsive design abong secure authentication shoho premium features royeche.
 
-First, run the development server:
+🌐 **Live Site URL:** [Apnar Live Website Link Ekhane Din]
+🎬 **Project Explanation Video:** [Apnar Video Link Ekhane Din]
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Key Features
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+* **Secure Authentication (JWT):** Email/Password abong Google Social Loginer maddhome secure authentication system, jeta HTTPOnly Cookie-r maddhome session maintain kore.
+* **Comprehensive CRUD Operations:** Logged-in user-ra nijeder gari add, update, ebong delete korte parben (confirmation modal shoho).
+* **Dynamic Booking System:** Driver proyojon kina ebong special note shoho user-ra gari book korte parben, ja shathe shathe database-e booking count barie dey.
+* **Advanced Search & Filter:** Car name diye dynamic regex search ebong car type (SUV, Sedan, Luxury, etc.) onusare instant filtering-er bebostha.
+* **Fully Responsive UI:** Mobile, Tablet, ebong Desktop-er jonno sompurno responsive, recruiter-friendly ebong clean dashboard design.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+**Client Side:**
+* React.js / Next.js
+* Tailwind CSS & DaisyUI / HeroUI
+* Framer Motion (Animations)
+* React Hook Form / Axios / React Toastify
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Server Side:**
+* Node.js & Express.js
+* MongoDB (Database)
+* JSON Web Token (JWT) with HTTPOnly Cookies
+* Dotenv (Environment Variables Security)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📦 NPM Packages Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* `express` - Backend server routing framework.
+* `mongoose` - MongoDB object modeling tool.
+* `jsonwebtoken` - Secure authentication token generation.
+* `cookie-parser` - HTTPOnly cookie handling.
+* `cors` - Cross-Origin Resource Sharing handling.
+* `dotenv` - Environment variable management.
+* `react-router-dom` - Client-side dynamic routing.
+* `react-toastify` / `sweetalert2` - Custom error/success messages (No default alerts used).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 💻 Local Setup & Installation
+
+Projectটি আপনার লোকাল মেশিনে রান করতে নিচের ধাপগুলো অনুসরণ করুন:
+
+1. **Repository Clone করুন:**
+   ```bash
+   git clone [Apnar Client Repo URL]
+   cd drivefleet-client

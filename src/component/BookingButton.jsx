@@ -1,15 +1,19 @@
 'use client';
+import { auth } from '@/lib/auth';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 const BookingButton = ({ car, id }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-
+     
     const handleBookingSubmit = async (e) => {
         e.preventDefault();
+         const {token} = await auth.api.getToken({
+                headers : await headers(),
+            });
         setLoading(true);
-
+   
         const formData = new FormData(e.currentTarget);
         
         const bookingData = {
@@ -25,6 +29,9 @@ const BookingButton = ({ car, id }) => {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
+                    
+            authorization : `Bearer ${token}`
+       
                 },
                 body: JSON.stringify(bookingData),
             });
