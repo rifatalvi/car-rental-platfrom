@@ -15,48 +15,67 @@ import {
   ListBox
 } from "@heroui/react";
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 export default function AddCarListingForm() {
   
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const rawData = Object.fromEntries(formData.entries());
+ const onSubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.currentTarget);
+  const rawData = Object.fromEntries(formData.entries());
+  
+  try {
     
+    const sessionRes = await authClient.getSession();
+    const userData = sessionRes?.data || sessionRes; 
+    const id = userData?.user?.id;
+
+ 
+    if (!id) {
+      toast.error("User session not found! Please re-login.");
+      return;
+    }
+
+   
+    const isAssetAvailable = formData.get("isAvailable") === "true" || formData.get("isAvailable") === "on";
+
+   
     const data = {
       carModel: rawData.carModel,
       dailyPrice: Number(rawData.dailyPrice),
       carType: rawData.carType,
       seatCapacity: Number(rawData.seatCapacity),
       imageUrl: rawData.imageUrl,
+      userId: id, 
       pickupLocation: rawData.pickupLocation,
       description: rawData.description,
-      isAvailable: formData.get("isAvailable") === "true",
+      isAvailable: isAssetAvailable,
       bookingCount: 0,
       createdAt: new Date().toISOString()
     };
 
-    try {
-      const res = await fetch(`http://localhost:5000/car`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
+    
+    const res = await fetch(`http://localhost:5000/car`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
 
-      if (res.ok) {
-        const newCar = await res.json();
-        toast.success("Car listed successfully!");
-        e.currentTarget.reset();
-        return newCar;
-      } else {
-        toast.error("Failed to add car listing.");
-      }
-    } catch (error) {
-      toast.error("Server connection error.");
+    if (res.ok) {
+      const newCar = await res.json();
+      toast.success("Car listed successfully!");
+      e.target.reset(); 
+      return newCar;
+    } else {
+      toast.error("Failed to add car listing.");
     }
-  };
+  } catch (error) {
+    console.error("Submission Error: ", error);
+    toast.error("Server connection error.");
+  }
+};
 
   return (
     <div className="max-w-4xl mx-auto my-12 px-4 sm:px-6">
