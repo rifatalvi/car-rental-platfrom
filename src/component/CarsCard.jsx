@@ -69,7 +69,7 @@ const CarsCard = ({ car }) => {
                         </p>
                     </div>
                 </div>
-                <Link href={`/explore-cars/${car?._id}`} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-center mt-auto text-sm">
+                <Link href={`http://localhost:3000/explore-cars/${_id}`} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 text-center mt-auto text-sm">
 
                     
                         View Details
