@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { Mail, Lock, User, Image } from "lucide-react";
 import Link from "next/link";
 import { BsGoogle } from "react-icons/bs";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -26,15 +27,21 @@ export default function SignUpPage() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    console.log("Form Data Submitted:", data);
-
+    const users = Object.fromEntries(formData.entries());
+    console.log("Form Data Submitted:", users);
+    const {data , error} = await authClient.signUp.email({
+        ...users,
+        
+    })
+    console.log({data,error});
+    
     try {
-      toast.success("Registration Successful!");
-      router.push("/login");
+        toast.success("Registration Successful!");
+        router.push("/login");
     } catch (error) {
-      toast.error(error.message || "Registration failed. Try again.");
+        toast.error(error.message || "Registration failed. Try again.");
     }
+    
   };
 
   return (
@@ -72,7 +79,7 @@ export default function SignUpPage() {
               <TextField isRequired name="photoUrl" type="url" className="w-full">
                 <Label>Photo URL</Label>
                 <div className="relative flex items-center w-full">
-                  <Image className="absolute left-3 text-default-400 w-4 h-4 z-10 pointer-events-none" />
+                  <Image width={200} hanging={200} className="absolute left-3 text-default-400 w-4 h-4 z-10 pointer-events-none" />
                   <Input placeholder="https://example.com/photo.jpg" className="w-full pl-7" />
                 </div>
                 <FieldError />

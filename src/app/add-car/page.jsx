@@ -14,19 +14,52 @@ import {
   Select, 
   ListBox
 } from "@heroui/react";
+import toast from "react-hot-toast";
 
 export default function AddCarListingForm() {
-  const onSubmit = (e) => {
+  
+  const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
-    alert(`Car Data Payload Matrix: \n${JSON.stringify(data, null, 2)}`);
+    const rawData = Object.fromEntries(formData.entries());
+    
+    const data = {
+      carModel: rawData.carModel,
+      dailyPrice: Number(rawData.dailyPrice),
+      carType: rawData.carType,
+      seatCapacity: Number(rawData.seatCapacity),
+      imageUrl: rawData.imageUrl,
+      pickupLocation: rawData.pickupLocation,
+      description: rawData.description,
+      isAvailable: formData.get("isAvailable") === "true",
+      bookingCount: 0,
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      const res = await fetch(`http://localhost:5000/car`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        const newCar = await res.json();
+        toast.success("Car listed successfully!");
+        e.currentTarget.reset();
+        return newCar;
+      } else {
+        toast.error("Failed to add car listing.");
+      }
+    } catch (error) {
+      toast.error("Server connection error.");
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto my-12 px-4 sm:px-6">
-      {/* Header Grid Section */}
       <div className="mb-8 space-y-2 text-center sm:text-left">
         <h1 className="text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
           Add New Car Listing
@@ -36,7 +69,6 @@ export default function AddCarListingForm() {
         </p>
       </div>
 
-      {/* Main Core Form Card Wrapper */}
       <Form 
         className="flex flex-col gap-6 bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-xl shadow-gray-200/50"
         onSubmit={onSubmit}
@@ -44,9 +76,9 @@ export default function AddCarListingForm() {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           
-          {/* 1. Car Name Input Box */}
-          <TextField isRequired name="carName" type="text" className="flex flex-col gap-1.5">
-            <Label className="text-sm font-bold text-gray-700">Car Name</Label>
+        
+          <TextField isRequired name="carModel" type="text" className="flex flex-col gap-1.5">
+            <Label className="text-sm font-bold text-gray-700">Car Model</Label>
             <div className="relative flex items-center">
               <Car size={18} className="absolute left-4 text-gray-400 pointer-events-none" />
               <Input 
@@ -57,7 +89,7 @@ export default function AddCarListingForm() {
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          {/* 2. Daily Rent Price Input */}
+          
           <TextField 
             isRequired 
             name="dailyPrice" 
@@ -76,42 +108,40 @@ export default function AddCarListingForm() {
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          {/* 3. Car Type Dropdown */}
-          <div className="flex flex-col gap-1.5">
-            <Select isRequired name="carType" placeholder="Select Type" className="w-full">
-              <Label className="text-sm font-bold text-gray-700 mb-1 block">Car Classification Type</Label>
-              <Select.Trigger className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 flex items-center justify-between bg-transparent transition-all outline-none text-sm font-medium focus-within:border-blue-500">
-                <Select.Value className="text-gray-700" />
-                <Select.Indicator className="text-gray-400" />
-              </Select.Trigger>
-              <Select.Popover className="bg-white border border-gray-100 rounded-2xl shadow-xl p-1 mt-1 z-50">
-                <ListBox className="flex flex-col gap-0.5">
-                  <ListBox.Item id="suv" textValue="SUV" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
-                    SUV
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                  <ListBox.Item id="sedan" textValue="Sedan" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
-                    Sedan
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                  <ListBox.Item id="hatchback" textValue="Hatchback" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
-                    Hatchback
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                  <ListBox.Item id="luxury" textValue="Luxury" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
-                    Luxury
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                  <ListBox.Item id="electric" textValue="Electric" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
-                    Electric
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                </ListBox>
-              </Select.Popover>
-            </Select>
-          </div>
+          
+          <Select name="carType" isRequired placeholder="Select Type" className="w-full">
+            <Label className="text-sm font-bold text-gray-700 mb-1 block">Car Classification Type</Label>
+            <Select.Trigger className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 flex items-center justify-between bg-transparent transition-all outline-none text-sm font-medium focus-within:border-blue-500 hover:border-gray-300">
+              <Select.Value className="text-gray-700 text-sm font-medium" />
+              <Select.Indicator className="text-gray-400" />
+            </Select.Trigger>
+            <Select.Popover className="bg-white border border-gray-100 rounded-2xl shadow-xl p-1 mt-1 z-50">
+              <ListBox className="flex flex-col gap-0.5">
+                <ListBox.Item id="SUV" textValue="SUV" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
+                  SUV
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+                <ListBox.Item id="Sedan" textValue="Sedan" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
+                  Sedan
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+                <ListBox.Item id="Hatchback" textValue="Hatchback" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
+                  Hatchback
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+                <ListBox.Item id="Luxury" textValue="Luxury" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
+                  Luxury
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+                <ListBox.Item id="Electric" textValue="Electric" className="px-3 py-2 text-sm text-gray-700 rounded-xl hover:bg-gray-100 cursor-pointer flex justify-between items-center font-medium">
+                  Electric
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+              </ListBox>
+            </Select.Popover>
+          </Select>
 
-          {/* 4. Seat Capacity Field */}
+        
           <TextField 
             isRequired 
             name="seatCapacity" 
@@ -130,7 +160,7 @@ export default function AddCarListingForm() {
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          {/* 5. Image URL Input Box */}
+     
           <TextField isRequired name="imageUrl" type="url" className="flex flex-col gap-1.5 md:col-span-2">
             <Label className="text-sm font-bold text-gray-700">Image URL</Label>
             <div className="relative flex items-center">
@@ -143,7 +173,7 @@ export default function AddCarListingForm() {
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          {/* 6. Pickup Location Field */}
+         
           <TextField isRequired name="pickupLocation" type="text" className="flex flex-col gap-1.5 md:col-span-2">
             <Label className="text-sm font-bold text-gray-700">Pickup Location Address</Label>
             <div className="relative flex items-center">
@@ -156,7 +186,7 @@ export default function AddCarListingForm() {
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          {/* 7. Detailed Description Textarea Field (FIXED SETUP) */}
+    
           <TextField isRequired name="description" className="flex flex-col gap-1.5 md:col-span-2">
             <Label className="text-sm font-bold text-gray-700">Detailed Description</Label>
             <div className="relative flex">
@@ -170,7 +200,7 @@ export default function AddCarListingForm() {
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          {/* 8. Availability Switch Configuration Layout */}
+          
           <div className="md:col-span-2 flex items-center justify-between bg-gray-50 border border-gray-100 p-4 rounded-2xl mt-2">
             <div className="space-y-0.5">
               <span className="text-sm font-bold text-gray-800 block">Immediate Availability Status</span>
@@ -189,7 +219,6 @@ export default function AddCarListingForm() {
 
         </div>
 
-        {/* Dynamic Buttons Handler Container Layer */}
         <div className="pt-4 flex gap-3 justify-end w-full border-t border-gray-50">
           <Button
             type="reset" 
