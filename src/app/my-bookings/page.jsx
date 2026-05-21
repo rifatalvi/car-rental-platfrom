@@ -7,42 +7,43 @@ const BookingPage = async () => {
     const session = await auth.api.getSession({
         headers: await headers()
     });
+    
 
-    const res = await fetch(`${process.env.SERVER_MAIN_URL}/booking-cars/${session?.user?.id}`, {
-        cache: 'no-store' 
-    });
-    const bookings = await res.json().catch(() => []);
-
-  
     const user = session?.user;
+    const res = await fetch(`http://localhost:5000/bookings/${user?.id}`, {
+        cache: 'no-store'
+    });
+    const bookings = await res.json()
+
+    console.log('all booking data', bookings);
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-7xl min-h-screen">
-            
-           
+
+
             <div className="mb-10 border-b border-gray-100 pb-5">
                 <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Dashboard</h1>
                 <p className="text-gray-500 mt-1">Manage your profile info and track your vehicle rental history.</p>
             </div>
 
-          
+
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                
-            
+
+
                 <div className="lg:col-span-1">
                     <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm sticky top-6 text-center lg:text-left">
                         <div className="flex flex-col items-center lg:items-start gap-4">
-                       
+
                             <div className="w-24 h-24 relative rounded-full overflow-hidden border-4 border-blue-50 bg-gray-50 shadow-inner">
                                 <Image
-                                width={300}
-                                height={300}
-                                    src={user?.image || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"} 
+                                    width={300}
+                                    height={300}
+                                    src={user?.image || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"}
                                     alt={user?.name || "User Profile"}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
-                          
+
                             <div className="space-y-1 w-full">
                                 <h3 className="text-xl font-bold text-gray-900 truncate">
                                     {user?.name || "Guest User"}
@@ -66,7 +67,7 @@ const BookingPage = async () => {
                     </div>
                 </div>
 
-                
+
                 <div className="lg:col-span-3">
                     {bookings.length === 0 ? (
                         <div className="text-center py-20 bg-white border border-dashed border-gray-200 rounded-2xl shadow-sm">
@@ -87,24 +88,24 @@ const BookingPage = async () => {
                                     </thead>
                                     <tbody className="divide-y divide-gray-100 text-gray-700 text-sm">
                                         {bookings.map((booking) => {
-                                            const car = booking?.carDetails; 
-                                            
-                                            const formattedDate = booking.bookingAt 
+                                            const car = booking?.carDetails;
+
+                                            const formattedDate = booking.bookingAt
                                                 ? new Date(booking.bookingAt).toLocaleDateString('en-US', {
                                                     year: 'numeric', month: 'short', day: 'numeric'
-                                                  })
+                                                })
                                                 : 'N/A';
 
                                             return (
                                                 <tr key={booking._id} className="hover:bg-gray-50/50 transition-colors">
-                                                 
+
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center gap-4">
                                                             <div className="w-16 h-12 relative rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
-                                                                <Image 
-                                                                width={300}
-                                                                height={300}
-                                                                    src={car?.carImage || "https://images.unsplash.com/photo-1503376780353-7e6692767b70"} 
+                                                                <Image
+                                                                    width={300}
+                                                                    height={300}
+                                                                    src={car?.carImage || "https://images.unsplash.com/photo-1503376780353-7e6692767b70"}
                                                                     alt={car?.carName || "Car"}
                                                                     className="w-full h-full object-cover"
                                                                 />
@@ -120,34 +121,32 @@ const BookingPage = async () => {
                                                         </div>
                                                     </td>
 
-                                                   
+
                                                     <td className="px-6 py-4 text-gray-600 font-medium">
                                                         {formattedDate}
                                                     </td>
 
-                                                 
+
                                                     <td className="px-6 py-4">
-                                                        <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${
-                                                            booking.driverNeeded === 'Yes' 
-                                                            ? 'bg-blue-50 text-blue-600' 
-                                                            : 'bg-gray-100 text-gray-600'
-                                                        }`}>
+                                                        <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${booking.driverNeeded === 'Yes'
+                                                                ? 'bg-blue-50 text-blue-600'
+                                                                : 'bg-gray-100 text-gray-600'
+                                                            }`}>
                                                             {booking.driverNeeded === 'Yes' ? 'Yes' : 'No'}
                                                         </span>
                                                     </td>
 
-                                                  
+
                                                     <td className="px-6 py-4 font-bold text-gray-900">
                                                         ${car?.dailyPrice || car?.price || 0}
                                                     </td>
 
-                                                   
+
                                                     <td className="px-6 py-4">
-                                                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                                                            booking.status === 'Pending' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
-                                                            booking.status === 'Confirmed' ? 'bg-green-50 text-green-600 border border-green-100' :
-                                                            'bg-red-50 text-red-600 border border-red-100'
-                                                        }`}>
+                                                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${booking.status === 'Pending' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                                                                booking.status === 'Confirmed' ? 'bg-green-50 text-green-600 border border-green-100' :
+                                                                    'bg-red-50 text-red-600 border border-red-100'
+                                                            }`}>
                                                             {booking.status || 'Pending'}
                                                         </span>
                                                     </td>
