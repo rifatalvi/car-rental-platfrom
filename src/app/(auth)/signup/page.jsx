@@ -43,6 +43,20 @@ export default function SignUpPage() {
     }
     
   };
+  const handleGoogleLogin = async () => {
+      try {
+        const data = await authClient.signIn.social({
+          provider:"google"
+        })
+         if(data?.user){
+  
+             toast.success("Logged in with Google successfully!");
+             router.push("/"); 
+         }
+      } catch (error) {
+        toast.error("Google Login Failed");
+      }
+    };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-background to-default-100 p-4">
@@ -128,6 +142,7 @@ export default function SignUpPage() {
         </div>
 
         <Button
+         onClick={handleGoogleLogin}
           variant="bordered"
           className="w-full flex items-center justify-center gap-2 border-default-200 font-medium mb-4"
         >

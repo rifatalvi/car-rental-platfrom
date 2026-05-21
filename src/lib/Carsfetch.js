@@ -1,8 +1,11 @@
 
-export const fetchSingleCars = async (id) => {
+export const fetchSingleCars = async (id, token) => {
     try {
         const res = await fetch(`${process.env.SERVER_MAIN_URL}/cars/${id}`, {
-            cache: 'no-store'
+           
+            headers:{
+                authorization: `Bearer ${token}` || ""
+            }
         });
         if (!res.ok) return null;
         return await res.json();

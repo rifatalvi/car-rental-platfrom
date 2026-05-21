@@ -45,10 +45,14 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     try {
-     
+      const data = await authClient.signIn.social({
+        provider:"google"
+      })
+       if(data?.user){
 
-      toast.success("Logged in with Google successfully!");
-      router.push("/"); 
+           toast.success("Logged in with Google successfully!");
+           router.push("/"); 
+       }
     } catch (error) {
       toast.error("Google Login Failed");
     }
@@ -114,7 +118,7 @@ export default function LoginPage() {
 
         <p className="text-center text-small text-default-500">
           New here?{" "}
-          <Link href="/register" className="text-primary hover:underline font-medium">
+          <Link href="/signup" className="text-primary hover:underline font-medium">
             Register an account
           </Link>
         </p>

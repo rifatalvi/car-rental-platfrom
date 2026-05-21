@@ -21,7 +21,7 @@ const NavbarPage = () => {
 
 
   const users = session?.user;
-
+     
   const handleLogout = async () => {
     await authClient.signOut(),
     toast.success("Logged out successfully");
