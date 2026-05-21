@@ -4,18 +4,15 @@ import Image from 'next/image';
 import React from 'react';
 
 const BookingPage = async () => {
-    const session = await auth.api.getSession({
-        headers: await headers()
-    });
-    
-
+   const session = await auth.api.getSession({
+    headers: await headers(),
+  });
     const user = session?.user;
-    const res = await fetch(`http://localhost:5000/bookings/${user?.id}`, {
-        cache: 'no-store'
-    });
-    const bookings = await res.json()
 
-    console.log('all booking data', bookings);
+
+  const res = await fetch(`http://localhost:5000/userBooking/${user?.id}`);
+  const bookings = await res.json();
+  console.log(bookings);
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-7xl min-h-screen">

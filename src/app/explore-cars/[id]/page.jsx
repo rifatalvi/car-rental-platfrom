@@ -55,12 +55,12 @@ const CarDetailsPage = async ({ params }) => {
                         <div className="grid grid-cols-2 gap-4 mb-6">
                             <div className="bg-gray-50 p-3 rounded-lg">
                                 <span className="block text-xs text-gray-400 uppercase font-medium">Daily Price</span>
-                                <span className="text-xl font-bold text-blue-600">${car?.dailyPrice || car?.price}/day</span>
+                                <span className="text-xl font-bold text-blue-600">${car?.dailyRentPrice}/day</span>
                             </div>
                             <div className="bg-gray-50 p-3 rounded-lg">
                                 <span className="block text-xs text-gray-400 uppercase font-medium">Availability</span>
-                                <span className={`text-md font-semibold ${car?.availability === 'Available' ? 'text-green-600' : 'text-red-500'}`}>
-                                    {car?.availability || 'Available'}
+                                <span className={`text-md font-semibold ${car?.availabilityStatus === 'Available' ? 'text-green-600' : 'text-red-500'}`}>
+                                    {car?.availabilityStatus || 'Available'}
                                 </span>
                             </div>
                         </div>
