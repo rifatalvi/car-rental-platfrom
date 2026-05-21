@@ -13,7 +13,7 @@ const CarDetailsPage = async ({ params }) => {
 
     const res = await fetch(`http://localhost:5000/cars/${id}`,{
         headers:{
-            authorization : `Bearer ${token}`
+            authorization : `Bearer ${token}` || ""
         }
     });
     const car = await res.json();

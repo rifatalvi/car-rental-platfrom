@@ -96,7 +96,7 @@ const NavbarPage = () => {
                   <Avatar>
                 <Avatar.Image alt={users?.name}
                 referrerPolicy="no-referrer"
-                src={users?.photoUrl} />
+                src={users?.image} />
                 <Avatar.Fallback>
                   {users?.name.slice(0, 2)}
                 </Avatar.Fallback>
@@ -151,7 +151,7 @@ const NavbarPage = () => {
               <Avatar>
                 <Avatar.Image alt={users?.name}
                 referrerPolicy="no-referrer"
-                src={users?.photoUrl} />
+                src={users?.image} />
                 <Avatar.Fallback>
                   {users?.name.slice(0, 2)}
                 </Avatar.Fallback>

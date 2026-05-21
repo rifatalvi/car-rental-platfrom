@@ -90,7 +90,7 @@ export default function SignUpPage() {
                 <FieldError />
               </TextField>
 
-              <TextField isRequired name="photoUrl" type="url" className="w-full">
+              <TextField isRequired name="image" type="url" className="w-full">
                 <Label>Photo URL</Label>
                 <div className="relative flex items-center w-full">
                   <Image width={200} hanging={200} className="absolute left-3 text-default-400 w-4 h-4 z-10 pointer-events-none" />

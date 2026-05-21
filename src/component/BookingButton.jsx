@@ -34,7 +34,7 @@ const BookingButton = ({ car, id }) => {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}` || ""
+                    authorization: `Bearer ${token}` || ""
                 },
                 credentials: 'include',
                 body: JSON.stringify(bookingData),
