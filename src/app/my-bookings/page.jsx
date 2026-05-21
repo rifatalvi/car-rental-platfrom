@@ -1,6 +1,7 @@
 import React from 'react';
 
-const BookingPage = () => {
+const BookingPage = async () => {
+    const res = await fetch()
     return (
         <div>
             This is my booking page
