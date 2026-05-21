@@ -7,6 +7,7 @@ import { Car, Menu, X, ChevronDown } from "lucide-react";
 import { authClient, useSession } from '@/lib/auth-client';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
+import { Avatar } from '@heroui/react';
 
 const NavbarPage = () => {
 
@@ -17,7 +18,7 @@ const NavbarPage = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session ,isPending} = useSession();
-  console.log(session);
+
 
   const users = session?.user;
 
@@ -92,13 +93,14 @@ const NavbarPage = () => {
                 onMouseLeave={() => setIsProfileOpen(false)}
               >
                 <button className="flex items-center gap-1.5 focus:outline-none p-1 rounded-full hover:bg-gray-50 transition">
-                  <Image 
-                    className="h-9 w-9 rounded-full object-cover border-2 border-blue-500" 
-                    src={session?.user?.photoUrl || "https://static.vecteezy.com/system/resources/previews/046/409/821/non_2x/avatar-profile-icon-in-flat-style-male-user-profile-illustration-on-isolated-background-man-profile-sign-business-concept-vector.jpg"} 
-                    width={40}
-                    height={40}
-                    alt="Profile" 
-                  />
+                  <Avatar>
+                <Avatar.Image alt={users?.name}
+                referrerPolicy="no-referrer"
+                src={users?.photoUrl} />
+                <Avatar.Fallback>
+                  {users?.name.slice(0, 2)}
+                </Avatar.Fallback>
+              </Avatar>
                   <ChevronDown size={16} className="text-gray-500" />
                 </button>
 
@@ -146,13 +148,14 @@ const NavbarPage = () => {
 
           <div className="flex md:hidden items-center">
             {users && (
-              <Image 
-                className="h-8 w-8 rounded-full object-cover border-2 border-blue-500" 
-                src={session?.user?.photoUrl || "https://static.vecteezy.com/system/resources/previews/046/409/821/non_2x/avatar-profile-icon-in-flat-style-male-user-profile-illustration-on-isolated-background-man-profile-sign-business-concept-vector.jpg"} 
-                width={32}
-                height={32}
-                alt="Profile" 
-              />
+              <Avatar>
+                <Avatar.Image alt={users?.name}
+                referrerPolicy="no-referrer"
+                src={users?.photoUrl} />
+                <Avatar.Fallback>
+                  {users?.name.slice(0, 2)}
+                </Avatar.Fallback>
+              </Avatar>
             )}
           </div>
 

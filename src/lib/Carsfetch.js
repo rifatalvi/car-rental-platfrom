@@ -1,7 +1,7 @@
 
 export const fetchSingleCars = async (id) => {
     try {
-        const res = await fetch(`http://localhost:5000/cars/${id}`, {
+        const res = await fetch(`${process.env.SERVER_MAIN_URL}/cars/${id}`, {
             cache: 'no-store'
         });
         if (!res.ok) return null;
@@ -11,3 +11,8 @@ export const fetchSingleCars = async (id) => {
         return null;
     }
 };
+export const feature = async()=>{
+    const res = await fetch(`${process.env.SERVER_MAIN_URL}/feature`);
+    const data = await res.json()
+    return data;
+}
