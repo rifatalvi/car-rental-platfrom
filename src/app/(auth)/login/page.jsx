@@ -29,7 +29,7 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget);
     const users = Object.fromEntries(formData.entries());
     const { data , error} = await authClient.signIn.email({
-        ...users,
+        ...users, 
     })
     
 
