@@ -5,15 +5,13 @@ import { feature } from "@/lib/Carsfetch";
 import { Button, Card } from "@heroui/react";
 import { ArrowRight, Users, Fuel } from "lucide-react";
 import CarsCard from "./CarsCard";
-import { auth } from "@/lib/auth";
+
 
 const FeaturCars = async () => {
-  const {token} = await auth.api.getToken({
-        headers : await headers()
-    })
   
-  const featuredCars = (await feature(token)) || [];
-
+  
+  const featuredCars = await feature() || [];
+ console.log(featuredCars);
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-transparent">
       
