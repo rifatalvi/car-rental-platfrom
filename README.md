@@ -1,35 +1,35 @@
 # 🚗 DriveFleet - Full-Stack Car Rental Platform
 
-DriveFleet holo akta modern, full-stack car rental application jekhane user-ra khub shojei gari browse korte, rent korte abong nijeder booking manage korte parben. Ete responsive design abong secure authentication shoho premium features royeche.
+DriveFleet holo akta modern, full-stack car rental application jekhane user-ra khub shojei gari explore ebong rent korte parben[cite: 1]. Ete secure authentication, dynamic booking system abong responsive modern dashboard UI royeche[cite: 1].
 
-🌐 **Live Site URL:** [Apnar Live Website Link Ekhane Din]
+🌐 **Live Site URL:** [Apnar Live Website Link Ekhane Din]  
 🎬 **Project Explanation Video:** [Apnar Video Link Ekhane Din]
 
 ---
 
 ## 🚀 Key Features
 
-* **Secure Authentication (JWT):** Email/Password abong Google Social Loginer maddhome secure authentication system, jeta HTTPOnly Cookie-r maddhome session maintain kore.
-* **Comprehensive CRUD Operations:** Logged-in user-ra nijeder gari add, update, ebong delete korte parben (confirmation modal shoho).
-* **Dynamic Booking System:** Driver proyojon kina ebong special note shoho user-ra gari book korte parben, ja shathe shathe database-e booking count barie dey.
-* **Advanced Search & Filter:** Car name diye dynamic regex search ebong car type (SUV, Sedan, Luxury, etc.) onusare instant filtering-er bebostha.
-* **Fully Responsive UI:** Mobile, Tablet, ebong Desktop-er jonno sompurno responsive, recruiter-friendly ebong clean dashboard design.
+* **Secure Authentication (JWT & Google Login):** Email/Password ebong Google Social Login-er maddhome secure authentication, ja JWT token-ke HTTPOnly Cookie-te store kore session maintain kore[cite: 1].
+* **Comprehensive CRUD Operations:** Logged-in user-ra database-e nijeder gari add, view, update ebong confirmation modal-er maddhome delete korte parben[cite: 1].
+* **Dynamic Booking System:** Driver commitment ebong special note shoho dynamic car booking system, ja boooking-er shathe shathe MongoDB `$inc` operator diye car booking count bray[cite: 1].
+* **Advanced Search & Filter:** Car name diye MongoDB `$regex` match/search ebong car type (SUV, Sedan, Luxury, etc.) onusare instant dynamic filtering[cite: 1].
+* **Robust Private Routing & Error Handling:** Reload korle private route theke login-e redirect hobe na[cite: 1]. Shone royeche custom 404 page, seamless loading spinner ebong custom alerts (toast messages)[cite: 1].
 
 ---
 
 ## 🛠️ Tech Stack
 
 **Client Side:**
-* React.js / Next.js
-* Tailwind CSS & DaisyUI / HeroUI
-* Framer Motion (Animations)
-* React Hook Form / Axios / React Toastify
+* React.js / Next.js[cite: 1]
+* Tailwind CSS & DaisyUI / HeroUI[cite: 1]
+* Framer Motion (Animations)[cite: 1]
+* React Hook Form / Axios / React Toastify[cite: 1]
 
 **Server Side:**
-* Node.js & Express.js
-* MongoDB (Database)
-* JSON Web Token (JWT) with HTTPOnly Cookies
-* Dotenv (Environment Variables Security)
+* Node.js & Express.js[cite: 1]
+* MongoDB (Database)[cite: 1]
+* JSON Web Token (JWT) with HTTPOnly Cookies[cite: 1]
+* Dotenv (Environment Variables Security)[cite: 1]
 
 ---
 
@@ -37,12 +37,12 @@ DriveFleet holo akta modern, full-stack car rental application jekhane user-ra k
 
 * `express` - Backend server routing framework.
 * `mongoose` - MongoDB object modeling tool.
-* `jsonwebtoken` - Secure authentication token generation.
-* `cookie-parser` - HTTPOnly cookie handling.
-* `cors` - Cross-Origin Resource Sharing handling.
-* `dotenv` - Environment variable management.
+* `jsonwebtoken` - Secure authentication token generation[cite: 1].
+* `cookie-parser` - HTTPOnly cookie handling[cite: 1].
+* `cors` - Cross-Origin Resource Sharing handling[cite: 1].
+* `dotenv` - Environment variable management[cite: 1].
 * `react-router-dom` - Client-side dynamic routing.
-* `react-toastify` / `sweetalert2` - Custom error/success messages (No default alerts used).
+* `react-toastify` / `sweetalert2` - Custom validation/success messages[cite: 1].
 
 ---
 
@@ -50,7 +50,17 @@ DriveFleet holo akta modern, full-stack car rental application jekhane user-ra k
 
 Projectটি আপনার লোকাল মেশিনে রান করতে নিচের ধাপগুলো অনুসরণ করুন:
 
-1. **Repository Clone করুন:**
-   ```bash
-   git clone [Apnar Client Repo URL]
-   cd drivefleet-client
+### 1. Client Side Setup
+```bash
+# Repository Clone করুন
+git clone [Apnar Client Repo URL]
+cd drivefleet-client
+
+# Dependencies Install করুন
+npm install
+
+# .env.local File তৈরি করে নিচের ভ্যারিয়েবল দিন
+VITE_API_URL=http://localhost:5000
+
+# Project রান করুন
+npm run dev

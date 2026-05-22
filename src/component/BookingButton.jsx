@@ -3,9 +3,9 @@
 import { authClient } from '@/lib/auth-client';
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Calendar, User, Mail, Car, AlertCircle } from 'lucide-react';
+import { Car, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
-import { date } from 'better-auth';
+
 
 const BookingButton = ({ car, id }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,14 +16,10 @@ const BookingButton = ({ car, id }) => {
         setLoading(true);
 
         try {
-         
-            const sessionRes = await authClient.getSession();
-            const { data: jwtData } = await authClient.token();
-            
-            const user = sessionRes?.data?.user;
-            const token = jwtData?.token;
 
-        
+            const { data: tokenData } = await authClient.token()
+
+
             if (!user) {
                 toast.error('Please login first to book a car!');
                 setLoading(false);
@@ -32,35 +28,37 @@ const BookingButton = ({ car, id }) => {
 
             const formData = new FormData(e.target);
 
-          
+
             const bookingData = {
-               
-                
-                    name: user?.name,
-                    email: user?.email,
-                    userId: user?.id,
-               
-                
-                
-                    carId: car?._id ,
-                    carName: car?.carName,
-                   imageUrl: car?.imageUrl || "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
-                    dailyRentPrice: car?.dailyRentPrice,
-                    pickupLocation: car?.pickupLocation,
-             
-               
+
+
+                name: user?.name,
+                email: user?.email,
+                userId: user?.id,
+
+
+
+                carId: car?._id,
+                carName: car?.carName,
+                imageUrl: car?.imageUrl || "https://images.unsplash.com/photo-1503376780353-7e6692767b70",
+                dailyRentPrice: car?.dailyRentPrice,
+                pickupLocation: car?.pickupLocation,
+
+
                 driverNeeded: formData.get('driverNeeded'),
                 specialNote: formData.get('specialNote') || "",
                 status: 'Pending',
                 bookingDate: new Date().toISOString()
             };
 
-           
-            const res = await fetch(`http://localhost:5000/booking-cars/${id}`, {
+
+            const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_MAIN_URL}/booking-cars/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    authorization: `Bearer ${token}` || ""
+
+                    authorization: `Bearer ${tokenData.token}`,
+
                 },
                 body: JSON.stringify(bookingData),
             });
@@ -74,37 +72,36 @@ const BookingButton = ({ car, id }) => {
                 toast.error(data?.message || 'Something went wrong. Please try again.');
             }
         } catch (error) {
-            // console.error('Booking error:', error);
+
             toast.error('Failed to connect to server.');
         } finally {
             setLoading(false);
         }
     };
 
-   
+
     const isUnavailable = car?.availabilityStatus === 'Unavailable';
 
     return (
         <>
-           
+
             <button
                 onClick={() => setIsOpen(true)}
                 disabled={isUnavailable}
-                className={`w-full py-4 text-center text-white font-bold rounded-xl transition-all shadow-md ${
-                    isUnavailable
+                className={`w-full py-4 text-center text-white font-bold rounded-xl transition-all shadow-md ${isUnavailable
                         ? 'bg-gray-400 cursor-not-allowed shadow-none'
                         : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transform hover:-translate-y-0.5 active:translate-y-0'
-                }`}
+                    }`}
             >
                 {isUnavailable ? 'Not Available for Booking' : 'Book Now'}
             </button>
 
-            
+
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
                     <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto">
 
-                    
+
                         <div className="flex justify-between items-center pb-4 border-b border-gray-100">
                             <div className="flex items-center gap-2">
                                 <Car className="w-5 h-5 text-blue-600" />
@@ -119,13 +116,13 @@ const BookingButton = ({ car, id }) => {
                             </button>
                         </div>
 
-                       
+
                         <div className="mt-4 p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-3">
                             <Image
                                 width={300}
                                 height={300}
-                                src={car?.imageUrl  || "https://images.unsplash.com/photo-1503376780353-7e6692767b70"} 
-                                alt={car?.carName} 
+                                src={car?.imageUrl || "https://images.unsplash.com/photo-1503376780353-7e6692767b70"}
+                                alt={car?.carName}
                                 className="w-16 h-12 object-cover rounded-lg border bg-white"
                             />
                             <div>
@@ -134,10 +131,10 @@ const BookingButton = ({ car, id }) => {
                             </div>
                         </div>
 
-                        
+
                         <form onSubmit={handleBookingSubmit} className="space-y-4 mt-4">
-                            
-                           
+
+
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                                     Driver Requirement
@@ -152,7 +149,7 @@ const BookingButton = ({ car, id }) => {
                                 </select>
                             </div>
 
-                           
+
                             <div>
                                 <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
                                     Special Instructions / Notes
@@ -165,13 +162,13 @@ const BookingButton = ({ car, id }) => {
                                 />
                             </div>
 
-                           
+
                             <div className="flex items-start gap-2 p-3 bg-amber-50 rounded-xl text-[11px] text-amber-800 border border-amber-100/50">
                                 <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                                 <span>By confirming, your account session info (Name & Email) will be attached as the renter profile for this vehicle.</span>
                             </div>
 
-                           
+
                             <div className="flex gap-3 pt-3 border-t border-gray-100">
                                 <button
                                     type="button"

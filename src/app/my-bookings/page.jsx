@@ -16,7 +16,7 @@ const BookingPage = async () => {
     if (!session?.user || !token) {
         redirect("/login")
     }
-    const res = await fetch(`http://localhost:5000/booking-cars/${user?.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_MAIN_URL}/booking-cars/${user?.id}`, {
         cache: 'no-store',
         headers:{
             authorization:`Bearer ${token}`
@@ -93,7 +93,7 @@ const BookingPage = async () => {
                     {(!bookings || bookings.length === 0) ? (
                         <div className="text-center py-16 md:py-24 bg-white border border-dashed border-gray-200 rounded-2xl shadow-sm transform transition-all hover:scale-[1.005]">
                             <Car className="w-12 h-12 text-gray-300 mx-auto mb-3 animate-bounce" />
-                            <p className="text-gray-500 text-base md:text-lg font-medium">You haven't booked any cars yet!</p>
+                            <p className="text-gray-500 text-base md:text-lg font-medium">You {"haven't"} booked any cars yet!</p>
                         </div>
                     ) : (
                         <>

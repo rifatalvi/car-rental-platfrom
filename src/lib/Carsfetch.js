@@ -1,7 +1,7 @@
 
 export const fetchSingleCars = async (id, token) => {
     try {
-        const res = await fetch(`${process.env.SERVER_MAIN_URL}/cars/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_MAIN_URL}/cars/${id}`, {
            
             headers:{
                 authorization: `Bearer ${token}` || ""
@@ -14,8 +14,16 @@ export const fetchSingleCars = async (id, token) => {
         return null;
     }
 };
-export const feature = async()=>{
-    const res = await fetch(`${process.env.SERVER_MAIN_URL}/feature`);
+export const feature = async(token)=>{
+   try{
+     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_MAIN_URL}/feature`,{
+        headers:{
+              authorization: `Bearer ${token}` || ""
+        }
+     });
     const data = await res.json()
     return data;
+   }catch(error){
+    console.error(error);
+   }
 }

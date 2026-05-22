@@ -1,81 +1,89 @@
 "use client";
 
 import { Check, Car, DollarSign, Users, MapPin, ImagePlus, FileText } from "lucide-react";
-import { 
-  Button, 
-  Description, 
-  FieldError, 
-  Form, 
-  Input, 
-  Label, 
-  Switch, 
-  TextArea, 
-  TextField, 
-  Select, 
+import {
+  Button,
+  Description,
+  FieldError,
+  Form,
+  Input,
+  Label,
+  Switch,
+  TextArea,
+  TextField,
+  Select,
   ListBox
 } from "@heroui/react";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function AddCarListingForm() {
-  
- const onSubmit = async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.currentTarget);
-  const rawData = Object.fromEntries(formData.entries());
-  
-  try {
-    
-    const sessionRes = await authClient.getSession();
-    const userData = sessionRes?.data || sessionRes; 
-    const id = userData?.user?.id;
 
- 
-    if (!id) {
-      toast.error("User session not found! Please re-login.");
-      return;
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const rawData = Object.fromEntries(formData.entries());
+
+    try {
+
+      const sessionRes = await authClient.getSession();
+      const userData = sessionRes?.data || sessionRes;
+      const id = userData?.user?.id;
+
+
+      if (!id) {
+        toast.error("User session not found! Please re-login.");
+        return;
+      }
+
+
+      const isAssetAvailable = formData.get("isAvailable") === "true" || formData.get("isAvailable") === "on";
+
+      const { data: jwtData } = await authClient.token();
+
+
+      const token = jwtData?.token;
+
+      const data = {
+        carModel: rawData.carModel,
+        dailyPrice: Number(rawData.dailyPrice),
+        carType: rawData.carType,
+        seatCapacity: Number(rawData.seatCapacity),
+        imageUrl: rawData.imageUrl,
+        userId: id,
+        pickupLocation: rawData.pickupLocation,
+        description: rawData.description,
+        isAvailable: isAssetAvailable,
+        bookingCount: 0,
+        createdAt: new Date().toISOString()
+      };
+
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_MAIN_URL}/car`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${token}` || ""
+        },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        const newCar = await res.json();
+        toast.success("Car listed successfully!");
+        e.target.reset();
+        if (newCar.acknowledged) {
+          redirect("/explore-cars")
+        }
+        return newCar;
+      } else {
+        toast.error("Failed to add car listing.");
+      }
+    } catch (error) {
+      console.error("Submission Error: ", error);
+      toast.error("Server connection error.");
     }
-
-   
-    const isAssetAvailable = formData.get("isAvailable") === "true" || formData.get("isAvailable") === "on";
-
-   
-    const data = {
-      carModel: rawData.carModel,
-      dailyPrice: Number(rawData.dailyPrice),
-      carType: rawData.carType,
-      seatCapacity: Number(rawData.seatCapacity),
-      imageUrl: rawData.imageUrl,
-      userId: id, 
-      pickupLocation: rawData.pickupLocation,
-      description: rawData.description,
-      isAvailable: isAssetAvailable,
-      bookingCount: 0,
-      createdAt: new Date().toISOString()
-    };
-
-    
-    const res = await fetch(`http://localhost:5000/car`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (res.ok) {
-      const newCar = await res.json();
-      toast.success("Car listed successfully!");
-      e.target.reset(); 
-      return newCar;
-    } else {
-      toast.error("Failed to add car listing.");
-    }
-  } catch (error) {
-    console.error("Submission Error: ", error);
-    toast.error("Server connection error.");
-  }
-};
+  };
 
   return (
     <div className="max-w-4xl mx-auto my-12 px-4 sm:px-6">
@@ -88,46 +96,46 @@ export default function AddCarListingForm() {
         </p>
       </div>
 
-      <Form 
+      <Form
         className="flex flex-col gap-6 bg-white border border-gray-100 rounded-3xl p-6 sm:p-10 shadow-xl shadow-gray-200/50"
         onSubmit={onSubmit}
         validationBehavior="native"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-          
-        
+
+
           <TextField isRequired name="carModel" type="text" className="flex flex-col gap-1.5">
             <Label className="text-sm font-bold text-gray-700">Car Model</Label>
             <div className="relative flex items-center">
               <Car size={18} className="absolute left-4 text-gray-400 pointer-events-none" />
-              <Input 
-                placeholder="e.g., Tesla Model S" 
+              <Input
+                placeholder="e.g., Tesla Model S"
                 className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-gray-200 focus:border-blue-500 bg-transparent transition-all outline-none text-sm font-medium"
               />
             </div>
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          
-          <TextField 
-            isRequired 
-            name="dailyPrice" 
-            type="number" 
+
+          <TextField
+            isRequired
+            name="dailyPrice"
+            type="number"
             className="flex flex-col gap-1.5"
             validate={(value) => Number(value) <= 0 ? "Daily price must be greater than 0" : null}
           >
             <Label className="text-sm font-bold text-gray-700">Daily Rent Price ($)</Label>
             <div className="relative flex items-center">
               <DollarSign size={18} className="absolute left-4 text-gray-400 pointer-events-none" />
-              <Input 
-                placeholder="e.g., 99" 
+              <Input
+                placeholder="e.g., 99"
                 className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-gray-200 focus:border-blue-500 bg-transparent transition-all outline-none text-sm font-medium"
               />
             </div>
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          
+
           <Select name="carType" isRequired placeholder="Select Type" className="w-full">
             <Label className="text-sm font-bold text-gray-700 mb-1 block">Car Classification Type</Label>
             <Select.Trigger className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 flex items-center justify-between bg-transparent transition-all outline-none text-sm font-medium focus-within:border-blue-500 hover:border-gray-300">
@@ -160,52 +168,52 @@ export default function AddCarListingForm() {
             </Select.Popover>
           </Select>
 
-        
-          <TextField 
-            isRequired 
-            name="seatCapacity" 
-            type="number" 
+
+          <TextField
+            isRequired
+            name="seatCapacity"
+            type="number"
             className="flex flex-col gap-1.5"
-            validate={(value) => Number(value) < 2 || Number(value) > 10 ? "Seats must be between 2 and 10" : null}
+            validate={(value) => Number(value) < 2 || Number(value) > 99 ? "Seats must be between 2 and 10" : null}
           >
             <Label className="text-sm font-bold text-gray-700">Seat Capacity</Label>
             <div className="relative flex items-center">
               <Users size={18} className="absolute left-4 text-gray-400 pointer-events-none" />
-              <Input 
-                placeholder="e.g., 5" 
+              <Input
+                placeholder="e.g., 5"
                 className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-gray-200 focus:border-blue-500 bg-transparent transition-all outline-none text-sm font-medium"
               />
             </div>
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-     
+
           <TextField isRequired name="imageUrl" type="url" className="flex flex-col gap-1.5 md:col-span-2">
             <Label className="text-sm font-bold text-gray-700">Image URL</Label>
             <div className="relative flex items-center">
               <ImagePlus size={18} className="absolute left-4 text-gray-400 pointer-events-none" />
-              <Input 
-                placeholder="Paste ImgBB / PostImage direct target link" 
+              <Input
+                placeholder="Paste ImgBB / PostImage direct target link"
                 className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-gray-200 focus:border-blue-500 bg-transparent transition-all outline-none text-sm font-medium"
               />
             </div>
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-         
+
           <TextField isRequired name="pickupLocation" type="text" className="flex flex-col gap-1.5 md:col-span-2">
             <Label className="text-sm font-bold text-gray-700">Pickup Location Address</Label>
             <div className="relative flex items-center">
               <MapPin size={18} className="absolute left-4 text-gray-400 pointer-events-none" />
-              <Input 
-                placeholder="e.g., Dhanmondi, Dhaka" 
+              <Input
+                placeholder="e.g., Dhanmondi, Dhaka"
                 className="w-full h-12 pl-11 pr-4 rounded-xl border-2 border-gray-200 focus:border-blue-500 bg-transparent transition-all outline-none text-sm font-medium"
               />
             </div>
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-    
+
           <TextField isRequired name="description" className="flex flex-col gap-1.5 md:col-span-2">
             <Label className="text-sm font-bold text-gray-700">Detailed Description</Label>
             <div className="relative flex">
@@ -219,7 +227,7 @@ export default function AddCarListingForm() {
             <FieldError className="text-xs font-semibold text-red-500 mt-0.5" />
           </TextField>
 
-          
+
           <div className="md:col-span-2 flex items-center justify-between bg-gray-50 border border-gray-100 p-4 rounded-2xl mt-2">
             <div className="space-y-0.5">
               <span className="text-sm font-bold text-gray-800 block">Immediate Availability Status</span>
@@ -240,8 +248,8 @@ export default function AddCarListingForm() {
 
         <div className="pt-4 flex gap-3 justify-end w-full border-t border-gray-50">
           <Button
-            type="reset" 
-            variant="flat" 
+            type="reset"
+            variant="flat"
             className="font-bold rounded-xl px-6 h-12 text-sm bg-gray-100 text-gray-600 hover:bg-gray-200 transition"
           >
             Reset

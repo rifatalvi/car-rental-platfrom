@@ -11,7 +11,7 @@ const CarDetailsPage = async ({ params }) => {
     });
     
   
-    const res = await fetch(`http://localhost:5000/cars/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_MAIN_URL}/cars/${id}`, {
         headers: {
             authorization: `Bearer ${token}` || ""
         },
@@ -90,7 +90,7 @@ const CarDetailsPage = async ({ params }) => {
                                 </span>
                             </div>
 
-                            {/* কার নাম */}
+                          
                             <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4">
                                 {car?.carName}
                             </h1>

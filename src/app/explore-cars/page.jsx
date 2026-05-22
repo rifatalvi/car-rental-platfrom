@@ -1,7 +1,8 @@
+export const dynamic = 'force-dynamic';
 import CarsCard from '@/component/CarsCard';
 import React from 'react';
 
-const CAR_TYPES = ['SUV', 'Sedan', 'Hatchback', 'Truck', 'Electric'];
+const CAR_TYPES = ['SUV', 'SEDAN', 'Hatchback', 'Truck', 'Electric'];
 
 
 const CarsPage = async ({ searchParams }) => {
@@ -12,7 +13,7 @@ const CarsPage = async ({ searchParams }) => {
 
   
     const res = await fetch(
-        `http://localhost:5000/cars?search=${searchQuery}&type=${typeFilter}`, 
+        `${process.env.NEXT_PUBLIC_SERVER_MAIN_URL}/search?search=${searchQuery}&type=${typeFilter}`, 
         { cache: 'no-store' }
     );
     const data = await res.json();
