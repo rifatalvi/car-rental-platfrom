@@ -2,11 +2,12 @@
 
 DriveFleet holo akta modern, full-stack car rental application jekhane user-ra khub shojei gari explore ebong rent korte parben[cite: 1]. Ete secure authentication, dynamic booking system abong responsive modern dashboard UI royeche[cite: 1].
 
-🌐 **Live Site URL:** [Apnar Live Website Link Ekhane Din]  
-🎬 **Project Explanation Video:** [Apnar Video Link Ekhane Din]
+🌐 **Live Site URL:** https://car-rental-platfrom.vercel.app/ 
 
 ---
 
+<img width="1919" height="946" alt="Screenshot 2026-07-13 214907" src="https://github.com/user-attachments/assets/8750ced7-d45d-42c2-92d6-a9ddec128bf7" />
+<img width="1919" height="945" alt="Screenshot 2026-07-13 214921" src="https://github.com/user-attachments/assets/8b02d8ce-18a2-4b4f-ad3b-92a172f6f473" />
 ## 🚀 Key Features
 
 * **Secure Authentication (JWT & Google Login):** Email/Password ebong Google Social Login-er maddhome secure authentication, ja JWT token-ke HTTPOnly Cookie-te store kore session maintain kore[cite: 1].
