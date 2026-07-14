@@ -17,6 +17,10 @@ DriveFleet holo akta modern, full-stack car rental application jekhane user-ra k
 * **Robust Private Routing & Error Handling:** Reload korle private route theke login-e redirect hobe na[cite: 1]. Shone royeche custom 404 page, seamless loading spinner ebong custom alerts (toast messages)[cite: 1].
 
 ---
+## 📖 Project Description
+DriveFleet, currently live at car-rental-platfrom.vercel.app, is designed to streamline the vehicle rental process for both users and administrators. Built with a clean, minimal, and premium aesthetic, the platform ensures an intuitive and professional user journey from browsing to booking.
+
+The application leverages robust backend logic with real-time database updates to handle dynamic booking counts and advanced search filtering. With a focus on security, performance, and a seamless UI/UX, DriveFleet provides a high-end digital environment for exploring luxury, sedan, and SUV options, managing personal vehicle listings, and tracking rental commitments effortlessly.
 
 ## 🛠️ Tech Stack
 
